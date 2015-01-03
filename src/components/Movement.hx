@@ -2,6 +2,7 @@
 package components;
 
 import luxe.Component;
+import luxe.Rectangle;
 
 import phoenix.Vector;
 
@@ -10,11 +11,15 @@ class Movement extends Component
 
     public var yspeed:Float;
     public var xspeed:Float;
-
+    public var bounds:Rectangle;
+    public var killBounds:Rectangle;
 
     override function init()
     {
-
+        if(killBounds == null && bounds != null)
+        {
+            killBounds.copy_from(bounds);
+        }
     } //ready
 
 
@@ -23,17 +28,20 @@ class Movement extends Component
         pos.x += xspeed * rate;
         pos.y += yspeed * rate;
 
-        if(pos.x > Luxe.screen.w + 50
-        || pos.x < -50
-        || pos.y > Luxe.screen.h + 50
-        || pos.y < -50)
+        if(pos.x > killBounds.w
+        || pos.x < killBounds.x
+        || pos.y > killBounds.h
+        || pos.y < killBounds.y)
         {
             // trace('OUT OF SCENE trying to destroy myself ${pos}');
             entity.destroy(true);
         }
 
-        pos.x = Math.round(pos.x);
-        pos.y = Math.round(pos.y);
+        if(pos.x > bounds.w) pos.x = bounds.w;
+        if(pos.x < bounds.x) pos.x = bounds.x;
+        if(pos.y > bounds.h) pos.y = bounds.h;
+        if(pos.y < bounds.y) pos.y = bounds.y;
+
     }
 
 }

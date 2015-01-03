@@ -14,9 +14,9 @@ class Shooting extends Component
         // Current cooldown
     public var cooldown:Float       = 0;
         // Max cd waiting time
-    public var maxcooldown:Float    = 0.33;
+    public var maxcooldown:Float    = 0.25;
         // How fast are the bullets
-    public var bulletspeed:Float    = 340;
+    public var bulletspeed:Float    = 600;
 
 
     var bullet:Bullet;

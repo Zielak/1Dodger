@@ -17,21 +17,22 @@ class Collider extends Component
 
     public var keepTesting:Bool = true;
     public var testAgainst:String;
+    
+    public var hit:Bool = false;
+    public var coldata:CollisionData;
 
     var arr:Array<Entity>;
-    var coldata:CollisionData;
     var otherComponent:Collider;
 
     override function init():Void
     {
         arr = new Array<Entity>();
-
-        trace('shape: ${shape}');
     } // init
 
     override function onfixedupdate(rate:Float):Void
     {
-        shape.position.copy_from(entity.pos);
+        shape.position = entity.pos;
+        hit = false;
 
         if(!keepTesting) return;
 
@@ -50,7 +51,8 @@ class Collider extends Component
 
             // Test if they collide!
             otherComponent = cast(t.get('collider'), Collider);
-            coldata = Collision.test(cast(shape, Shape), cast(otherComponent.shape, Shape));
+            coldata = Collision.test(shape, otherComponent.shape);
+            
             if(coldata != null)
             {
                 // Tell myself what I hit
@@ -64,7 +66,7 @@ class Collider extends Component
     function reportHit(_entity:Entity):Void
     {
         trace('REPORTED HIT!');
-        entity.destroy(true);
+        hit = true;
     }
 
 }

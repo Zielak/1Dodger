@@ -24,13 +24,11 @@ class Bounce extends Component
         pos.x += velocity.x * rate;
         pos.y += velocity.y * rate;
 
-        velocity.divideScalar(2);
+        velocity.multiplyScalar(58 * rate);
         
-        if(velocity.length <= 10)
+        if(velocity.length <= 1)
         {
-            trace('trying to remove myself');
             remove(name);
-            trace('failed to remove myself?');
         }
 
     } // onfixedupdate

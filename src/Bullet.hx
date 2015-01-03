@@ -2,6 +2,7 @@
 package ;
 
 import luxe.collision.shapes.Circle;
+import luxe.Rectangle;
 import luxe.Visual;
 
 import phoenix.Vector;
@@ -35,9 +36,19 @@ class Bullet extends Visual
         movement = new Movement({name:'movement'});
         movement.yspeed = (bulletoptions.yspeed!=null) ? bulletoptions.yspeed : 0;
         movement.xspeed = (bulletoptions.xspeed!=null) ? bulletoptions.xspeed : 0;
+        movement.bounds = new Rectangle(0, -10, Luxe.screen.w, Luxe.screen.h);
+        movement.killBounds = new Rectangle(-10, 0, Luxe.screen.w+10, Luxe.screen.h+10);
 
         add(movement);
         add(collider);
+    }
+
+    override function onfixedupdate(rate:Float):Void
+    {
+        if(collider.hit)
+        {
+            destroy(true);
+        }
     }
     
 }
