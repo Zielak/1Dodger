@@ -1,0 +1,25 @@
+{
+
+  project : {
+    name : 'Dodger',
+    version : '1.0.0',
+    author : 'Darek Greenly',
+
+    app : {
+      name : '1Dodger',
+      package : 'pl.zielak.1Dodger'
+    },
+
+    build : {
+      dependencies : {
+        luxe : '*',
+      }
+    },
+
+    files : {
+      assets : 'assets/'
+    }
+
+  }
+
+}
