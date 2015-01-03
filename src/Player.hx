@@ -11,18 +11,15 @@ import components.Shooting;
 class Player extends Sprite
 {
 
-    var movespeed:Float = 80;
+    var movespeed:Float = 160;
 
     var input:Input;
     var shooting:Shooting;
-
-    var realPos:Vector;
 
     override function init()
     {
         fixed_rate = 1/60;
 
-        realPos = new Vector(pos.x,pos.y);
 
         input = new Input({name: 'input'});
         shooting = new Shooting({name: 'shooting'});
@@ -45,10 +42,6 @@ class Player extends Sprite
             moveplayer(rate);
         }
 
-
-
-        pos.x = Math.round(realPos.x);
-        pos.y = Math.round(realPos.y);
     }
 
 
@@ -57,11 +50,11 @@ class Player extends Sprite
     {
         if(input.left)
         {
-            realPos.x -= movespeed * rate;
+            pos.x -= movespeed * rate;
         }
         else if(input.right)
         {
-            realPos.x += movespeed * rate;
+            pos.x += movespeed * rate;
         }
     }
 

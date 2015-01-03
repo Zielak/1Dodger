@@ -1,68 +1,43 @@
 
 package ;
 
-import luxe.Sprite;
+import luxe.collision.shapes.Circle;
+import luxe.Visual;
 
-import phoenix.Color;
 import phoenix.Vector;
 
 import components.Movement;
+import components.Collider;
 
 typedef BulletOptions = {
-    var pos:Vector;
     @:optional var yspeed:Float;
     @:optional var xspeed:Float;
 }
 
-class Bullet extends Sprite
+class Bullet extends Visual
 {
+    public static inline var BULLET_R:Float = 5;
+
+    public var bulletoptions:BulletOptions;
 
     var movement:Movement;
+    var collider:Collider;
 
-
-    override public function new( options:BulletOptions ) {
-
-        // uv = new Rectangle();
-
-        // if(options == null) {
-        //     throw "Sprite needs not-null options at the moment";
-        // }
-
-        //     //centered
-        // if(options.centered != null) {
-        //     centered = options.centered;
-        // }
-
-        //     //flipx
-        // if(options.flipx != null) {
-        //     flipx = options.flipx;
-        // }
-
-        //     //flipy
-        // if(options.flipy != null) {
-        //     flipy = options.flipy;
-        // }
-
-            //create visual
-        var spriteoptions:luxe.options.SpriteOptions = {
-            name_unique: true,
-            name: 'bullet',
-            pos: options.pos,
-            color: new Color().rgb(0xFFFFAA),
-            size: new Vector(10,10)
-        };
-
-
-        movement = new Movement({name:'movement'});
-        movement.yspeed = options.yspeed;
-        movement.xspeed = options.xspeed;
-
-        super( spriteoptions );
-    } // new
 
     override function init():Void
     {
         fixed_rate = 1/60;
+
+        collider = new Collider({name:'collider'});
+        collider.testAgainst = 'enemy';
+        collider.shape = new Circle(0, 0, BULLET_R);
+
+        movement = new Movement({name:'movement'});
+        movement.yspeed = (bulletoptions.yspeed!=null) ? bulletoptions.yspeed : 0;
+        movement.xspeed = (bulletoptions.xspeed!=null) ? bulletoptions.xspeed : 0;
+
         add(movement);
+        add(collider);
     }
+    
 }

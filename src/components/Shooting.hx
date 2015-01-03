@@ -4,6 +4,7 @@ package components;
 import Bullet;
 
 import luxe.Component;
+import phoenix.Color;
 import phoenix.Vector;
 
 import components.Input;
@@ -13,9 +14,9 @@ class Shooting extends Component
         // Current cooldown
     public var cooldown:Float       = 0;
         // Max cd waiting time
-    public var maxcooldown:Float    = 0.2;
+    public var maxcooldown:Float    = 0.33;
         // How fast are the bullets
-    public var bulletspeed:Float    = 90;
+    public var bulletspeed:Float    = 340;
 
 
     var bullet:Bullet;
@@ -24,7 +25,7 @@ class Shooting extends Component
 
     override function init():Void
     {
-        trace('shooting INIT()');
+        // trace('shooting INIT()');
         if(has('input'))
         {
             _input = get('input');
@@ -52,14 +53,22 @@ class Shooting extends Component
 
     function fire():Void
     {
-        trace('shooting FIRE()');
+        // trace('shooting FIRE()');
         cooldown = maxcooldown;
 
         bullet = new Bullet({
+            name: 'bullet',
+            name_unique: true,
             pos: new Vector().copy_from(entity.pos),
-            yspeed: -bulletspeed
+            color: new Color().rgb(0xFFFFAA),
+            geometry: Luxe.draw.circle({
+                x: 0, y: 0,
+                r: Bullet.BULLET_R
+            })
         });
-        Luxe.scene.add(bullet);
+        bullet.bulletoptions = {
+            yspeed: -bulletspeed
+        };
     }
 
 

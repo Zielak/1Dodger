@@ -4,6 +4,9 @@ import luxe.Input;
 import phoenix.Color;
 import phoenix.Vector;
 
+
+import luxe.collision.ShapeDrawerLuxe;
+
 class Main extends luxe.Game
 {
 
@@ -13,11 +16,14 @@ class Main extends luxe.Game
 
     var player:Player;
     var ground:Ground;
+    var spawner:Spawner;
+
+    var drawer:ShapeDrawerLuxe;
 
     override function config(config:luxe.AppConfig):luxe.AppConfig
     {
         config.window.width = 400;
-        config.window.height = 400;
+        config.window.height = 600;
         config.window.resizable = false;
                 
         return config;
@@ -25,8 +31,9 @@ class Main extends luxe.Game
 
     override function ready()
     {
-        Luxe.camera.zoom = 2;
+        // Luxe.camera.zoom = 2;
         
+        // drawer = new ShapeDrawerLuxe();
 
         initGame();
 
@@ -43,7 +50,7 @@ class Main extends luxe.Game
 
     override function update(dt:Float)
     {
-
+        
     } //update
 
 
@@ -54,22 +61,28 @@ class Main extends luxe.Game
         var _h:Float = Luxe.screen.w/Luxe.camera.zoom;
 
         bounds = new Vector(_w, _h);
+        trace('bounds: ${bounds}');
 
         player = new Player({
             name: 'player',
             pos: Luxe.camera.screen_point_to_world( new Vector(Luxe.screen.w/2, Luxe.screen.h - 30) ),
-            size: new Vector(10,10),
+            size: new Vector(20,20),
             color: new Color().rgb(0x00ff00)
         });
 
         ground = new Ground({
             name: 'ground',
             pos: Luxe.camera.screen_point_to_world( new Vector(Luxe.screen.w/2, Luxe.screen.h - 10) ),
-            size: new Vector(bounds.x, 5),
+            size: new Vector(bounds.x, 20),
             color: new Color().rgb(0x663366),
             centered: true
         });
+
+        spawner = new Spawner({
+            name: 'spawner'
+        });
         
     }
+
 
 } //Main
