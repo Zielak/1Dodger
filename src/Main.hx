@@ -1,14 +1,18 @@
 
 import luxe.Input;
+import luxe.Vector;
 
+import phoenix.BitmapFont;
+import phoenix.Batcher;
 import phoenix.Color;
-import phoenix.Vector;
+import phoenix.geometry.TextGeometry;
 
-
-import luxe.collision.ShapeDrawerLuxe;
 
 class Main extends luxe.Game
 {
+
+    var playing:Bool;
+
 
 
     var bounds:Vector;
@@ -18,7 +22,8 @@ class Main extends luxe.Game
     var ground:Ground;
     var spawner:Spawner;
 
-    var drawer:ShapeDrawerLuxe;
+    var score:Int;
+
 
     override function config(config:luxe.AppConfig):luxe.AppConfig
     {
@@ -31,19 +36,27 @@ class Main extends luxe.Game
 
     override function ready()
     {
-        // Luxe.camera.zoom = 2;
-        
-        // drawer = new ShapeDrawerLuxe();
 
         initGame();
+        play();
 
     } //ready
 
     override function onkeyup( e:KeyEvent )
     {
 
-        if(e.keycode == Key.escape) {
-            Luxe.shutdown();
+        if(e.keycode == Key.escape && !playing)
+        {
+            quit2();
+        }
+        else if(e.keycode == Key.escape && playing)
+        {
+            quit1();
+        }
+
+        if(e.keycode == Key.enter && !playing)
+        {
+            play();
         }
 
     } //onkeyup
@@ -82,7 +95,30 @@ class Main extends luxe.Game
             name: 'spawner'
         });
         
+        playing = true;
     }
+
+
+
+
+    function quit1():Void
+    {
+        playing = false;
+        spawner.stopSpawning();
+    } // quit1
+
+    function quit2():Void
+    {
+        Luxe.shutdown();   
+    } // quit2
+
+    function play():Void
+    {
+        playing = true;
+        spawner.startSpawning();
+
+    } // play
+
 
 
 } //Main

@@ -8,9 +8,13 @@ import phoenix.Color;
 
 class Spawner extends Entity
 {
+    var spawning:Bool = false;
 
+    var cd:Float;
     var cooldown:Float;
-    var maxcooldown:Float = 3;
+
+    static inline var maxcooldown:Float = 3;
+    static inline var mincooldown:Float = 0.6;
 
     var enemyCount:Int = 0;
 
@@ -21,9 +25,10 @@ class Spawner extends Entity
 
     override public function init():Void
     {
-        cooldown = 0;
         lastspawn = new Vector(Luxe.screen.w/2, -10);
         newspawn = new Vector().copy_from(lastspawn);
+        
+        spawning = true;
     }
 
 
@@ -34,18 +39,36 @@ class Spawner extends Entity
 
 
 
+    public function startSpawning():Void
+    {
+        spawning = true;
+        cd = 0;
+        cooldown = maxcooldown;
+    }
+
+    public function stopSpawning():Void
+    {
+        spawning = false;
+        cooldown = maxcooldown;
+        cd = maxcooldown;
+    }
+
+
 
 
 
 
     function updateTimers(dt:Float):Void
     {
-        cooldown -= dt;
-        if(cooldown < 0)
+        if(!spawning) return;
+
+
+        cd -= dt;
+        if(cd < 0)
         {
-            cooldown = 0;
+            cd = 0;
         }
-        if(cooldown == 0)
+        if(cd == 0)
         {
             spawnEnemy();
         }
@@ -54,8 +77,8 @@ class Spawner extends Entity
 
     function spawnEnemy():Void
     {
-        cooldown = maxcooldown;
-        maxcooldown -= (maxcooldown > 0.6) ? 0.11 : 0;
+        cd = cooldown;
+        cooldown -= (cooldown > mincooldown) ? 0.1 : 0;
         enemyCount++;
 
         newspawn = new Vector();
