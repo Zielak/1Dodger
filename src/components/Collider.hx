@@ -27,6 +27,10 @@ class Collider extends Component
     override function init():Void
     {
         arr = new Array<Entity>();
+
+        entity.events.listen('collider.hit', function(_){
+            gotHit();
+        });
     } // init
 
     override function onfixedupdate(rate:Float):Void
@@ -55,18 +59,22 @@ class Collider extends Component
             
             if(coldata != null)
             {
-                // Tell myself what I hit
-                reportHit(otherComponent.entity);
                 // Tell the other one, that i hit him!
-                otherComponent.reportHit(entity);
+                otherComponent.entity.events.fire('collider.hit');
+                
+                // Tell myself what I hit
+                gotHit();
             }
         }
     }
 
-    function reportHit(_entity:Entity):Void
+    function gotHit():Void
     {
-        trace('REPORTED HIT!');
         hit = true;
     }
 
 }
+
+// typedef CollisionEvent = {
+//     var entity:Entity;
+// }
