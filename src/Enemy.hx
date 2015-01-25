@@ -39,7 +39,7 @@ class Enemy extends Visual
         pickProperties();
 
         collider = new Collider({name:'collider'});
-        collider.keepTesting = false;
+        collider.hit = false;
         add(collider);
 
         movement = new Movement({name:'movement'});

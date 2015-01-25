@@ -15,7 +15,6 @@ class Collider extends Component
 
     public var shape:Shape;
 
-    public var keepTesting:Bool = true;
     public var testAgainst:String;
     
     public var hit:Bool = false;
@@ -38,7 +37,7 @@ class Collider extends Component
         shape.position = entity.pos;
         hit = false;
 
-        if(!keepTesting) return;
+        if(hit) return;
 
         arr = new Array<Entity>();
         arr = Luxe.scene.get_named_like(testAgainst, arr);
@@ -59,6 +58,8 @@ class Collider extends Component
             
             if(coldata != null)
             {
+                if(otherComponent.hit) continue;
+                
                 // Tell the other one, that i hit him!
                 otherComponent.entity.events.fire('collider.hit');
                 
