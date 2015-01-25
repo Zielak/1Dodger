@@ -1,3 +1,6 @@
+package;
+
+import Enemy;
 
 import luxe.Input;
 import luxe.Vector;
@@ -39,6 +42,19 @@ class Main extends luxe.Game
 
         initGame();
         play();
+        Luxe.events.listen('enemy.damaged', function(e:EnemyEvent){
+            if(!playing) return;
+            if(e.enemy.collider.hit == false) return;
+            score += pointsDamage;
+            updateScoreText();
+        });
+
+        Luxe.events.listen('enemy.destroyed', function(e:EnemyEvent){
+            if(!playing) return;
+            if(e.enemy.collider.hit == false) return;
+            score += pointsDestroy;
+            updateScoreText();
+        });
 
     } //ready
 

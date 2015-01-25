@@ -16,6 +16,10 @@ import components.Bounce;
 import components.Collider;
 import components.Movement;
 
+typedef EnemyEvent = {
+    var enemy:Enemy;
+}
+
 class Enemy extends Visual
 {
 
@@ -27,10 +31,14 @@ class Enemy extends Visual
 
     // var geometry:Geometry;
     var movement:Movement;
-    var collider:Collider;
+    @:isVar public var collider(default,null):Collider;
 
     var _size:Float;
     var _rotation:Float;
+
+    var _colorFlashBase:Color;
+    var _colorFlashCounter:Float;
+    var _colorFlashMax:Float    = 0.1;
 
     override public function init():Void
     {
@@ -71,6 +79,8 @@ class Enemy extends Visual
             case 2: drawTriangle();
             default: drawSquare();
         }
+        _colorFlashBase = color;
+        
         movement.yspeed += (-health + 4) * 10;
     } // redraw
 
@@ -115,13 +125,14 @@ class Enemy extends Visual
     } // drawTriangle
 
 
-    override function onfixedupdate(rate:Float):Void
+    override function update(rate:Float):Void
     {
         if(collider.hit)
         {
             health--;
             if(health<=0)
             {
+                Luxe.events.fire('enemy.destroyed', {enemy:this});
                 destroy(true);
             }
             else
@@ -136,10 +147,27 @@ class Enemy extends Visual
                     case 2: hitTriangle();
                     default: hitSquare();
                 }
+                Luxe.events.fire('enemy.damaged', {enemy:this});
                 redraw();
 
                 _rotation += (_rotation>0) ? 100 : -100;
             }
+        }
+
+        // Flash if just hit
+        if(collider.hit)
+        {
+            _colorFlashCounter = _colorFlashMax;
+        }
+        if(_colorFlashCounter > 0)
+        {
+            _colorFlashCounter -= rate;
+            color = new Color(1,1,1,1);
+        }
+        else if(_colorFlashCounter < 0)
+        {
+            _colorFlashCounter = 0;
+            color = _colorFlashBase;
         }
 
         // Rotate me

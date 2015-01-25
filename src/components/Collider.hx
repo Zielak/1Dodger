@@ -32,7 +32,8 @@ class Collider extends Component
         });
     } // init
 
-    override function onfixedupdate(rate:Float):Void
+
+    override function update(rate:Float):Void
     {
         shape.position = entity.pos;
         hit = false;
@@ -60,11 +61,12 @@ class Collider extends Component
             {
                 if(otherComponent.hit) continue;
                 
+                // Tell myself what I hit
+                gotHit();
+                
                 // Tell the other one, that i hit him!
                 otherComponent.entity.events.fire('collider.hit');
                 
-                // Tell myself what I hit
-                gotHit();
             }
         }
     }
