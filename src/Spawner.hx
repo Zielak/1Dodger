@@ -16,6 +16,8 @@ class Spawner extends Entity
     static inline var mincooldown:Float = 0.6;
 
     var enemyCount:Int = 0;
+        // Totally randomize position after X enemies
+    var randomizeNewSpawn:Int = 8;
 
     var enemy:Enemy;
 
@@ -85,7 +87,16 @@ class Spawner extends Entity
         enemyCount++;
 
         newspawn = new Vector();
-        newspawn.x = lastspawn.x + (Math.random()-0.5) * (Luxe.screen.w * 0.75);
+        // Totally randomize spawn point after some time
+        // Avoid "stucking" to the wall
+        if(enemyCount % randomizeNewSpawn == 0)
+        {
+            newspawn.x = Luxe.screen.w/2 * Math.random() + Luxe.screen.w/4;
+        }
+        else
+        {
+            newspawn.x = lastspawn.x + (Math.random()-0.5) * (Luxe.screen.w * 0.75);
+        }
         if(newspawn.x > Luxe.screen.w-20)
         {
             newspawn.x = Luxe.screen.w-20;
