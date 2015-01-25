@@ -12,7 +12,6 @@ class Spawner extends Entity
 
     var cd:Float;
     var cooldown:Float;
-
     static inline var maxcooldown:Float = 3;
     static inline var mincooldown:Float = 0.6;
 
@@ -78,7 +77,11 @@ class Spawner extends Entity
     function spawnEnemy():Void
     {
         cd = cooldown;
-        cooldown -= (cooldown > mincooldown) ? 0.1 : 0;
+        if(cooldown > mincooldown)
+        {
+            cooldown /= 1.03;
+        }
+
         enemyCount++;
 
         newspawn = new Vector();
