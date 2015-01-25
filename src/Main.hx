@@ -3,12 +3,12 @@ package;
 import Enemy;
 
 import luxe.Input;
+import luxe.Rectangle;
+import luxe.Text;
 import luxe.Vector;
-
-import phoenix.BitmapFont;
 import phoenix.Batcher;
+import phoenix.BitmapFont;
 import phoenix.Color;
-import phoenix.geometry.TextGeometry;
 
 
 class Main extends luxe.Game
@@ -26,6 +26,11 @@ class Main extends luxe.Game
     var spawner:Spawner;
 
     var score:Int;
+    var pointsDamage:Int = 2;
+    var pointsDestroy:Int = 10;
+
+    var welcomeText:Text;
+    var scoreText:Text;
 
 
     override function config(config:luxe.AppConfig):luxe.AppConfig
@@ -39,9 +44,9 @@ class Main extends luxe.Game
 
     override function ready()
     {
-
+        playing = false;
         initGame();
-        play();
+
         Luxe.events.listen('enemy.damaged', function(e:EnemyEvent){
             if(!playing) return;
             if(e.enemy.collider.hit == false) return;
@@ -110,8 +115,33 @@ class Main extends luxe.Game
         spawner = new Spawner({
             name: 'spawner'
         });
+
+
+        welcomeText = new Text({
+            bounds: new Rectangle(0,100,Luxe.screen.w, 100),
+            align: center,
+            point_size: 16,
+            text: 'Press ENTER to start\nARROWS + SPACE',
+            batcher: Luxe.renderer.batcher
+        });
         
-        playing = true;
+        scoreText = new Text({
+            bounds: new Rectangle(10, 10, Luxe.screen.w-10, 30),
+            align: left,
+            point_size: 24,
+            text: 'SCORE: 0',
+        });
+        scoreText.visible = false;
+        score = 0;
+
+        playing = false;
+    }
+
+
+
+    function updateScoreText():Void
+    {
+        scoreText.text = 'SCORE: ${score}';
     }
 
 
@@ -120,6 +150,10 @@ class Main extends luxe.Game
     function quit1():Void
     {
         playing = false;
+
+        welcomeText.visible = true;
+        scoreText.visible = false;
+
         spawner.stopSpawning();
     } // quit1
 
@@ -131,6 +165,12 @@ class Main extends luxe.Game
     function play():Void
     {
         playing = true;
+
+        welcomeText.visible = false;
+        score = 0;
+        updateScoreText();
+        scoreText.visible = true;
+
         spawner.startSpawning();
 
     } // play

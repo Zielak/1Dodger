@@ -81,7 +81,7 @@ class Spawner extends Entity
         cd = cooldown;
         if(cooldown > mincooldown)
         {
-            cooldown /= 1.03;
+            cooldown = cooldown * .99;
         }
 
         enemyCount++;
