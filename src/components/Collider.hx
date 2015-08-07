@@ -5,7 +5,7 @@ import luxe.Component;
 import luxe.collision.shapes.Shape;
 import luxe.collision.shapes.Circle;
 import luxe.collision.shapes.Polygon;
-import luxe.collision.CollisionData;
+import luxe.collision.data.ShapeCollision;
 import luxe.collision.Collision;
 import luxe.Entity;
 
@@ -18,7 +18,7 @@ class Collider extends Component
     public var testAgainst:String;
     
     public var hit:Bool = false;
-    public var coldata:CollisionData;
+    public var coldata:ShapeCollision;
 
     var arr:Array<Entity>;
     var otherComponent:Collider;
@@ -55,7 +55,7 @@ class Collider extends Component
 
             // Test if they collide!
             otherComponent = cast(t.get('collider'), Collider);
-            coldata = Collision.test(shape, otherComponent.shape);
+            coldata = Collision.shapeWithShape(shape, otherComponent.shape);
             
             if(coldata != null)
             {
