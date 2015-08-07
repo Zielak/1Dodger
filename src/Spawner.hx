@@ -29,7 +29,7 @@ class Spawner extends Entity
         lastspawn = new Vector(Luxe.screen.w/2, -10);
         newspawn = new Vector().copy_from(lastspawn);
         
-        spawning = true;
+        spawning = false;
     }
 
 
