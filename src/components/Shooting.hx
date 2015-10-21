@@ -4,6 +4,7 @@ package components;
 import Bullet;
 
 import luxe.Component;
+import luxe.Rectangle;
 import phoenix.Color;
 import phoenix.Vector;
 
@@ -18,8 +19,6 @@ class Shooting extends Component
         // How fast are the bullets
     public var bulletspeed:Float    = 600;
 
-
-    var bullet:Bullet;
 
     var _input:Input;
 
@@ -56,19 +55,20 @@ class Shooting extends Component
         // trace('shooting FIRE()');
         cooldown = maxcooldown;
 
-        bullet = new Bullet({
+        var bullet = new Bullet({
             name: 'bullet',
             name_unique: true,
             pos: new Vector().copy_from(entity.pos),
             color: new Color().rgb(0xFFFFAA),
-            geometry: Luxe.draw.circle({
-                x: 0, y: 0,
-                r: Bullet.BULLET_R
-            })
+            size: new Vector(Bullet.BULLET_R, Bullet.BULLET_R),
         });
-        bullet.bulletoptions = {
-            yspeed: -bulletspeed
-        };
+
+        var movement = new Movement({name:'movement'});
+        movement.yspeed = -bulletspeed;
+        movement.xspeed = 0;
+        movement.bounds = new Rectangle(0, -10, Luxe.screen.w, Luxe.screen.h);
+        movement.killBounds = new Rectangle(-10, 0, Luxe.screen.w+10, Luxe.screen.h+10);
+        bullet.add( movement );
     }
 
 

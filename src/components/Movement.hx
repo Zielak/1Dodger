@@ -25,22 +25,24 @@ class Movement extends Component
 
     override function onfixedupdate(rate:Float):Void
     {
-        pos.x += xspeed * rate;
-        pos.y += yspeed * rate;
+        trace('movement.onfixedupdate( )');
 
-        if(pos.x > killBounds.w
-        || pos.x < killBounds.x
-        || pos.y > killBounds.h
-        || pos.y < killBounds.y)
+        entity.pos.x += xspeed * rate;
+        entity.pos.y += yspeed * rate;
+
+        if(entity.pos.x > killBounds.w
+        || entity.pos.x < killBounds.x
+        || entity.pos.y > killBounds.h
+        || entity.pos.y < killBounds.y)
         {
-            // trace('OUT OF SCENE trying to destroy myself ${pos}');
+            // trace('OUT OF SCENE trying to destroy myself ${entity.pos}');
             entity.destroy(true);
         }
 
-        if(pos.x > bounds.w) pos.x = bounds.w;
-        if(pos.x < bounds.x) pos.x = bounds.x;
-        if(pos.y > bounds.h) pos.y = bounds.h;
-        if(pos.y < bounds.y) pos.y = bounds.y;
+        if(entity.pos.x > bounds.w) entity.pos.x = bounds.w;
+        if(entity.pos.x < bounds.x) entity.pos.x = bounds.x;
+        if(entity.pos.y > bounds.h) entity.pos.y = bounds.h;
+        if(entity.pos.y < bounds.y) entity.pos.y = bounds.y;
 
     }
 
