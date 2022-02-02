@@ -4,4 +4,4 @@
 
 # Demo
 
-Play it on my blog: [http://zielak.pl/1gaw-1-dodger#more-244](http://zielak.pl/1gaw-1-dodger#more-244)
+Play it on my blog: https://darekgreenly.com/1gaw-1-dodger#continue
